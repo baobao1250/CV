@@ -1,604 +1,1064 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>NGÔ NGUYÊN BẢO - Frontend Developer CV</title>
-<style>
-  #toolbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 9999;
-    background: #1e1e2e;
-    color: #cdd6f4;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 13px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
-  }
-  #toolbar .logo { font-weight: 800; color: #cba6f7; font-size: 15px; margin-right: 6px; }
-  #toolbar .sep { color: #444; margin: 0 4px; }
-  #toolbar label { font-size: 12px; color: #a6adc8; }
-  #toolbar input[type="color"] {
-    width: 28px; height: 28px;
-    border: none; border-radius: 6px;
-    cursor: pointer; padding: 2px;
-    background: #313244;
-  }
-  #toolbar select, #toolbar input[type="number"] {
-    background: #313244; color: #cdd6f4;
-    border: 1px solid #45475a; border-radius: 6px;
-    padding: 4px 8px; font-size: 12px; cursor: pointer;
-  }
-  #toolbar input[type="number"] { width: 54px; }
-  .tb-btn {
-    background: #7040b8; color: #fff; border: none;
-    border-radius: 7px; padding: 6px 14px; font-size: 12px;
-    font-weight: 700; cursor: pointer; transition: background 0.2s; white-space: nowrap;
-  }
-  .tb-btn:hover { background: #9060d8; }
-  .tb-btn.green { background: #40a060; }
-  .tb-btn.green:hover { background: #50c070; }
-  .tb-hint { margin-left: auto; font-size: 11px; color: #6c7086; white-space: nowrap; }
+    <meta charset="UTF-8">
+    <title>NGÔ NGUYÊN BẢO - Frontend Developer CV</title>
+    <style>
+        #toolbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            background: #1e1e2e;
+            color: #cdd6f4;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 13px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+        }
 
-  [contenteditable="true"] { outline: none; border-radius: 3px; transition: background 0.15s; }
-  [contenteditable="true"]:hover { background: rgba(139, 80, 208, 0.07); }
-  [contenteditable="true"]:focus {
-    background: rgba(139, 80, 208, 0.12);
-    box-shadow: inset 0 0 0 1.5px rgba(139, 80, 208, 0.35);
-  }
+        #toolbar .logo {
+            font-weight: 800;
+            color: #cba6f7;
+            font-size: 15px;
+            margin-right: 6px;
+        }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    font-size: 9pt; color: #2d2d2d;
-    background: #e8e8e8; padding-top: 56px;
-  }
-  .page {
-    width: 210mm; margin: 20px auto;
-    display: flex; min-height: 297mm;
-    background: #fff;
-    box-shadow: 0 4px 30px rgba(0,0,0,0.18);
-    border-radius: 3px; overflow: hidden;
-  }
+        #toolbar .sep {
+            color: #444;
+            margin: 0 4px;
+        }
 
-  /* SIDEBAR */
-  .sidebar { width: 62mm; min-width: 62mm; background: #f5f0fc; display: flex; flex-direction: column; }
-  .sidebar-photo-area {
-    background: linear-gradient(160deg, #ddd0f5 0%, #c9b4ee 100%);
-    padding: 24px 16px 18px; position: relative; overflow: hidden;
-  }
-  .sidebar-photo-area::before {
-    content: '✦'; position: absolute; top: 10px; right: 14px;
-    color: rgba(130,80,200,0.4); font-size: 14pt; pointer-events: none;
-  }
-  .sidebar-photo-area::after {
-    content: '✦'; position: absolute; bottom: 14px; left: 10px;
-    color: rgba(130,80,200,0.3); font-size: 9pt; pointer-events: none;
-  }
-  .photo-wrap {
-    width: 100px; height: 118px; border-radius: 8px; overflow: hidden;
-    margin: 0 auto; border: 3px solid rgba(255,255,255,0.9);
-    box-shadow: 0 4px 18px rgba(100,60,180,0.25);
-    position: relative; z-index: 1; cursor: pointer;
-  }
-  .photo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .photo-placeholder {
-    width: 100%; height: 100%;
-    background: linear-gradient(135deg, #b89fe0, #8055c0);
-    display: flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 32pt; font-weight: 800;
-  }
-  .photo-hint { text-align: center; font-size: 7pt; color: rgba(80,40,160,0.55); margin-top: 7px; position: relative; z-index: 1; }
-  .sidebar-body { padding: 14px 14px 20px; }
-  .s-section { margin-bottom: 16px; }
-  .s-title {
-    font-size: 7pt; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase;
-    color: #7040b8; margin-bottom: 8px; padding-bottom: 3px; border-bottom: 1.5px solid #c5a8e8;
-  }
-  .contact-row { margin-bottom: 6px; }
-  .c-label { font-size: 6.8pt; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
-  .c-val { font-size: 7.8pt; color: #333; word-break: break-all; line-height: 1.4; }
-  .info-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
-  .i-label { font-size: 7pt; font-weight: 700; color: #666; }
-  .i-val { font-size: 7pt; color: #333; }
-  .sk-group { margin-bottom: 10px; }
-  .sk-group-name { font-size: 6.8pt; font-weight: 800; color: #7040b8; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
-  .sk-tags { display: flex; flex-wrap: wrap; gap: 3px; }
-  .sk-tag { background: #e8ddf7; color: #5530a0; border-radius: 3px; padding: 2px 6px; font-size: 7pt; font-weight: 500; line-height: 1.4; }
-  .sk-tag.new { background: #7040b8; color: #fff; }
+        #toolbar label {
+            font-size: 12px;
+            color: #a6adc8;
+        }
 
-  /* MAIN */
-  .main { flex: 1; padding: 26px 24px 24px 22px; }
-  .name-block { margin-bottom: 18px; }
-  .name-block h1 { font-size: 21pt; font-weight: 900; color: #1a1a1a; letter-spacing: 0.5px; line-height: 1.05; }
-  .name-block .role { font-size: 8.5pt; font-weight: 700; color: #8b50d0; letter-spacing: 3px; text-transform: uppercase; margin-top: 5px; }
-  .sec { margin-bottom: 18px; }
-  .sec-title { font-size: 8.5pt; font-weight: 900; text-transform: uppercase; letter-spacing: 2.5px; color: #7040b8; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 2px solid #c5a8e8; }
-  .about-text { font-size: 8pt; line-height: 1.65; color: #444; }
-  .co-block { margin-bottom: 15px; }
-  .co-header {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding: 5px 10px;
-    background: linear-gradient(90deg, #ede5fa, #f8f4fe);
-    border-left: 3px solid #8b50d0; border-radius: 0 4px 4px 0;
-  }
-  .co-name { font-size: 9.5pt; font-weight: 900; color: #1a1a1a; flex: 1; }
-  .co-period { font-size: 7pt; color: #888; font-style: italic; white-space: nowrap; }
-  .proj { margin-bottom: 10px; padding-left: 10px; border-left: 2px solid #d4bff0; }
-  .proj-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; gap: 6px; }
-  .proj-name { display: inline-block; background: #8b50d0; color: #fff; border-radius: 3px; padding: 2px 9px; font-size: 7.2pt; font-weight: 700; white-space: nowrap; }
-  .proj-name.alt { background: #6b3ab0; }
-  .proj-period { font-size: 6.8pt; color: #aaa; white-space: nowrap; flex-shrink: 0; }
-  .proj-stack { font-size: 7pt; color: #777; margin-bottom: 3px; }
-  .proj-stack strong { color: #555; font-weight: 700; }
-  .proj-body { font-size: 7.8pt; line-height: 1.55; color: #444; }
-  .proj-body ul { padding-left: 13px; }
-  .proj-body li { margin-bottom: 2.5px; }
-  .proj-body li::marker { color: #8b50d0; }
-  .proj-body strong { color: #5a30a0; font-weight: 700; }
-  .edu-period { font-size: 7pt; color: #999; margin-bottom: 2px; }
-  .edu-degree { font-size: 9pt; font-weight: 800; color: #1a1a1a; }
-  .edu-school { font-size: 8pt; color: #8b50d0; font-weight: 700; margin: 2px 0 5px; }
-  .edu-detail { font-size: 7.8pt; color: #555; line-height: 1.6; }
-  .edu-detail strong { color: #333; }
+        #toolbar input[type="color"] {
+            width: 28px;
+            height: 28px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 2px;
+            background: #313244;
+        }
 
-  @media print {
-    #toolbar, .photo-hint { display: none !important; }
-    body { background: #fff; padding-top: 0; }
-    .page { width: 100%; margin: 0; box-shadow: none; border-radius: 0; }
-    [contenteditable] { background: none !important; box-shadow: none !important; }
-    .co-block { page-break-inside: avoid; }
-    .proj { page-break-inside: avoid; }
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-</style>
+        #toolbar select,
+        #toolbar input[type="number"] {
+            background: #313244;
+            color: #cdd6f4;
+            border: 1px solid #45475a;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        #toolbar input[type="number"] {
+            width: 54px;
+        }
+
+        .tb-btn {
+            background: #7040b8;
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .tb-btn:hover {
+            background: #9060d8;
+        }
+
+        .tb-btn.green {
+            background: #40a060;
+        }
+
+        .tb-btn.green:hover {
+            background: #50c070;
+        }
+
+        .tb-hint {
+            margin-left: auto;
+            font-size: 11px;
+            color: #6c7086;
+            white-space: nowrap;
+        }
+
+        [contenteditable="true"] {
+            outline: none;
+            border-radius: 3px;
+            transition: background 0.15s;
+        }
+
+        [contenteditable="true"]:hover {
+            background: rgba(139, 80, 208, 0.07);
+        }
+
+        [contenteditable="true"]:focus {
+            background: rgba(139, 80, 208, 0.12);
+            box-shadow: inset 0 0 0 1.5px rgba(139, 80, 208, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 9pt;
+            color: #2d2d2d;
+            background: #e8e8e8;
+            padding-top: 56px;
+        }
+
+        .page {
+            width: 210mm;
+            margin: 20px auto;
+            display: flex;
+            min-height: 297mm;
+            background: #fff;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.18);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 62mm;
+            min-width: 62mm;
+            background: #f5f0fc;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-photo-area {
+            background: linear-gradient(160deg, #ddd0f5 0%, #c9b4ee 100%);
+            padding: 24px 16px 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-photo-area::before {
+            content: '✦';
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            color: rgba(130, 80, 200, 0.4);
+            font-size: 14pt;
+            pointer-events: none;
+        }
+
+        .sidebar-photo-area::after {
+            content: '✦';
+            position: absolute;
+            bottom: 14px;
+            left: 10px;
+            color: rgba(130, 80, 200, 0.3);
+            font-size: 9pt;
+            pointer-events: none;
+        }
+
+        .photo-wrap {
+            width: 100px;
+            height: 118px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 0 auto;
+            border: 3px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 18px rgba(100, 60, 180, 0.25);
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+        }
+
+        .photo-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #b89fe0, #8055c0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 32pt;
+            font-weight: 800;
+        }
+
+        .photo-hint {
+            text-align: center;
+            font-size: 7pt;
+            color: rgba(80, 40, 160, 0.55);
+            margin-top: 7px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar-body {
+            padding: 14px 14px 20px;
+        }
+
+        .s-section {
+            margin-bottom: 16px;
+        }
+
+        .s-title {
+            font-size: 7pt;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: #7040b8;
+            margin-bottom: 8px;
+            padding-bottom: 3px;
+            border-bottom: 1.5px solid #c5a8e8;
+        }
+
+        .contact-row {
+            margin-bottom: 6px;
+        }
+
+        .c-label {
+            font-size: 6.8pt;
+            font-weight: 700;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .c-val {
+            font-size: 7.8pt;
+            color: #333;
+            word-break: break-all;
+            line-height: 1.4;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 5px;
+        }
+
+        .i-label {
+            font-size: 7pt;
+            font-weight: 700;
+            color: #666;
+        }
+
+        .i-val {
+            font-size: 7pt;
+            color: #333;
+        }
+
+        .sk-group {
+            margin-bottom: 10px;
+        }
+
+        .sk-group-name {
+            font-size: 6.8pt;
+            font-weight: 800;
+            color: #7040b8;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 4px;
+        }
+
+        .sk-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+        }
+
+        .sk-tag {
+            background: #e8ddf7;
+            color: #5530a0;
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-size: 7pt;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .sk-tag.new {
+            background: #7040b8;
+            color: #fff;
+        }
+
+        /* MAIN */
+        .main {
+            flex: 1;
+            padding: 26px 24px 24px 22px;
+        }
+
+        .name-block {
+            margin-bottom: 18px;
+        }
+
+        .name-block h1 {
+            font-size: 21pt;
+            font-weight: 900;
+            color: #1a1a1a;
+            letter-spacing: 0.5px;
+            line-height: 1.05;
+        }
+
+        .name-block .role {
+            font-size: 8.5pt;
+            font-weight: 700;
+            color: #8b50d0;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .sec {
+            margin-bottom: 18px;
+        }
+
+        .sec-title {
+            font-size: 8.5pt;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: #7040b8;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 2px solid #c5a8e8;
+        }
+
+        .about-text {
+            font-size: 8pt;
+            line-height: 1.65;
+            color: #444;
+        }
+
+        .co-block {
+            margin-bottom: 15px;
+        }
+
+        .co-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            padding: 5px 10px;
+            background: linear-gradient(90deg, #ede5fa, #f8f4fe);
+            border-left: 3px solid #8b50d0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .co-name {
+            font-size: 9.5pt;
+            font-weight: 900;
+            color: #1a1a1a;
+            flex: 1;
+        }
+
+        .co-period {
+            font-size: 7pt;
+            color: #888;
+            font-style: italic;
+            white-space: nowrap;
+        }
+
+        .proj {
+            margin-bottom: 10px;
+            padding-left: 10px;
+            border-left: 2px solid #d4bff0;
+        }
+
+        .proj-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 3px;
+            gap: 6px;
+        }
+
+        .proj-name {
+            display: inline-block;
+            background: #8b50d0;
+            color: #fff;
+            border-radius: 3px;
+            padding: 2px 9px;
+            font-size: 7.2pt;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .proj-name.alt {
+            background: #6b3ab0;
+        }
+
+        .proj-period {
+            font-size: 6.8pt;
+            color: #aaa;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .proj-stack {
+            font-size: 7pt;
+            color: #777;
+            margin-bottom: 3px;
+        }
+
+        .proj-stack strong {
+            color: #555;
+            font-weight: 700;
+        }
+
+        .proj-body {
+            font-size: 7.8pt;
+            line-height: 1.55;
+            color: #444;
+        }
+
+        .proj-body ul {
+            padding-left: 13px;
+        }
+
+        .proj-body li {
+            margin-bottom: 2.5px;
+        }
+
+        .proj-body li::marker {
+            color: #8b50d0;
+        }
+
+        .proj-body strong {
+            color: #5a30a0;
+            font-weight: 700;
+        }
+
+        .edu-period {
+            font-size: 7pt;
+            color: #999;
+            margin-bottom: 2px;
+        }
+
+        .edu-degree {
+            font-size: 9pt;
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+
+        .edu-school {
+            font-size: 8pt;
+            color: #8b50d0;
+            font-weight: 700;
+            margin: 2px 0 5px;
+        }
+
+        .edu-detail {
+            font-size: 7.8pt;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .edu-detail strong {
+            color: #333;
+        }
+
+        @media print {
+
+            #toolbar,
+            .photo-hint {
+                display: none !important;
+            }
+
+            body {
+                background: #fff;
+                padding-top: 0;
+                /* Đưa 2 thuộc tính này vào bên trong body */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .page {
+                width: 100%;
+                margin: 0;
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            [contenteditable] {
+                background: none !important;
+                box-shadow: none !important;
+            }
+
+            .co-block {
+                page-break-inside: avoid;
+            }
+
+            .proj {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<div id="toolbar">
-  <span class="logo">✦ CV Editor</span>
-  <span class="sep">|</span>
-  <label>Màu chủ đạo</label>
-  <input type="color" id="colorPicker" value="#7040b8">
-  <span class="sep">|</span>
-  <label>Font size</label>
-  <input type="number" id="fontSize" value="9" min="7" max="13" step="0.5">
-  <span style="font-size:11px;color:#6c7086">pt</span>
-  <span class="sep">|</span>
-  <label>Font</label>
-  <select id="fontSelect">
-    <option value="'Segoe UI', Arial, sans-serif">Segoe UI</option>
-    <option value="Arial, sans-serif">Arial</option>
-    <option value="'Helvetica Neue', sans-serif">Helvetica</option>
-    <option value="Georgia, serif">Georgia</option>
-    <option value="'Times New Roman', serif">Times New Roman</option>
-    <option value="'Calibri', sans-serif">Calibri</option>
-  </select>
-  <span class="sep">|</span>
-  <button class="tb-btn" onclick="uploadPhoto()">📷 Đổi ảnh</button>
-  <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="handlePhoto(event)">
-  <span class="sep">|</span>
-  <button class="tb-btn green" onclick="downloadPDF()">⬇ Download PDF</button>
-  <span class="tb-hint">💡 Click vào bất kỳ chữ nào để chỉnh sửa trực tiếp</span>
-</div>
-
-<div class="page">
-  <div class="sidebar">
-    <div class="sidebar-photo-area">
-      <div class="photo-wrap" onclick="uploadPhoto()">
-        <div class="photo-placeholder">N</div>
-      </div>
-      <div class="photo-hint">Click ảnh để thay đổi</div>
-    </div>
-    <div class="sidebar-body">
-
-      <div class="s-section">
-        <div class="s-title">Contact</div>
-        <div class="contact-row">
-          <div class="c-label">Phone</div>
-          <div class="c-val" contenteditable="true">+84-343414041</div>
-        </div>
-        <div class="contact-row">
-          <div class="c-label">Email</div>
-          <div class="c-val" contenteditable="true">baobao9942@gmail.com</div>
-        </div>
-        <div class="contact-row">
-          <div class="c-label">Address</div>
-          <div class="c-val" contenteditable="true">198/24/20 Phan Văn Trị,<br>Bình Thạnh, Ho Chi Minh</div>
-        </div>
-      </div>
-
-      <div class="s-section">
-        <div class="s-title">Personal</div>
-        <div class="info-row"><span class="i-label">Birthday</span><span class="i-val" contenteditable="true">04/02/1999</span></div>
-        <div class="info-row"><span class="i-label">Nationality</span><span class="i-val" contenteditable="true">Vietnamese</span></div>
-        <div class="info-row"><span class="i-label">Status</span><span class="i-val" contenteditable="true">Single</span></div>
-        <div class="info-row"><span class="i-label">Gender</span><span class="i-val" contenteditable="true">Male</span></div>
-      </div>
-
-      <div class="s-section">
-        <div class="s-title">Skills</div>
-        <div class="sk-group">
-          <div class="sk-group-name">Languages</div>
-          <div class="sk-tags">
-            <span class="sk-tag" contenteditable="true">JavaScript</span>
-            <span class="sk-tag" contenteditable="true">TypeScript</span>
-            <span class="sk-tag" contenteditable="true">Python</span>
-            <span class="sk-tag" contenteditable="true">Java</span>
-            <span class="sk-tag" contenteditable="true">PHP</span>
-            <span class="sk-tag" contenteditable="true">HTML5</span>
-            <span class="sk-tag" contenteditable="true">CSS3 / SCSS</span>
-          </div>
-        </div>
-        <div class="sk-group">
-          <div class="sk-group-name">Frameworks & Libraries</div>
-          <div class="sk-tags">
-            <span class="sk-tag" contenteditable="true">Next.js</span>
-            <span class="sk-tag" contenteditable="true">React.js</span>
-            <span class="sk-tag" contenteditable="true">Angular</span>
-            <span class="sk-tag" contenteditable="true">Django</span>
-            <span class="sk-tag" contenteditable="true">Spring Boot</span>
-            <span class="sk-tag" contenteditable="true">Smarty</span>
-          </div>
-        </div>
-        <div class="sk-group">
-          <div class="sk-group-name">UI Libraries</div>
-          <div class="sk-tags">
-            <span class="sk-tag" contenteditable="true">Material UI</span>
-            <span class="sk-tag" contenteditable="true">Ant Design</span>
-            <span class="sk-tag" contenteditable="true">Refine</span>
-          </div>
-        </div>
-        <div class="sk-group">
-          <div class="sk-group-name">Auth & Integration</div>
-          <div class="sk-tags">
-            <span class="sk-tag" contenteditable="true">Keycloak / SSO</span>
-            <span class="sk-tag" contenteditable="true">RESTful API</span>
-            <span class="sk-tag" contenteditable="true">SPFx</span>
-          </div>
-        </div>
-        <div class="sk-group">
-          <div class="sk-group-name">Power Platform</div>
-          <div class="sk-tags">
-            <span class="sk-tag" contenteditable="true">Power Apps</span>
-            <span class="sk-tag" contenteditable="true">Power Automate</span>
-            <span class="sk-tag" contenteditable="true">SharePoint</span>
-          </div>
-        </div>
-        <div class="sk-group">
-          <div class="sk-group-name">State & Architecture</div>
-          <div class="sk-tags">
-            <span class="sk-tag" contenteditable="true">Redux</span>
-            <span class="sk-tag" contenteditable="true">Zustand</span>
-            <span class="sk-tag" contenteditable="true">Micro-Frontend</span>
-            <span class="sk-tag" contenteditable="true">MVC</span>
-            <span class="sk-tag" contenteditable="true">SSR / CSR</span>
-          </div>
-        </div>
-        <div class="sk-group">
-          <div class="sk-group-name">Tools & Others</div>
-          <div class="sk-tags">
-            <span class="sk-tag" contenteditable="true">Git</span>
-            <span class="sk-tag" contenteditable="true">Webpack</span>
-            <span class="sk-tag" contenteditable="true">BEM</span>
-            <span class="sk-tag" contenteditable="true">Formbricks</span>
-            <span class="sk-tag" contenteditable="true">ECharts</span>
-            <span class="sk-tag" contenteditable="true">AmCharts</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="main">
-    <div class="name-block">
-      <h1 contenteditable="true">NGÔ NGUYÊN BẢO</h1>
-      <div class="role" contenteditable="true">Frontend Developer &nbsp;·&nbsp; 5 Years Experience</div>
+    <div id="toolbar">
+        <span class="logo">✦ CV Editor</span>
+        <span class="sep">|</span>
+        <label>Màu chủ đạo</label>
+        <input type="color" id="colorPicker" value="#7040b8">
+        <span class="sep">|</span>
+        <label>Font size</label>
+        <input type="number" id="fontSize" value="9" min="7" max="13" step="0.5">
+        <span style="font-size:11px;color:#6c7086">pt</span>
+        <span class="sep">|</span>
+        <label>Font</label>
+        <select id="fontSelect">
+            <option value="'Segoe UI', Arial, sans-serif">Segoe UI</option>
+            <option value="Arial, sans-serif">Arial</option>
+            <option value="'Helvetica Neue', sans-serif">Helvetica</option>
+            <option value="Georgia, serif">Georgia</option>
+            <option value="'Times New Roman', serif">Times New Roman</option>
+            <option value="'Calibri', sans-serif">Calibri</option>
+        </select>
+        <span class="sep">|</span>
+        <button class="tb-btn" onclick="uploadPhoto()">📷 Đổi ảnh</button>
+        <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="handlePhoto(event)">
+        <span class="sep">|</span>
+        <button class="tb-btn green" onclick="downloadPDF()">⬇ Download PDF</button>
+        <span class="tb-hint">💡 Click vào bất kỳ chữ nào để chỉnh sửa trực tiếp</span>
     </div>
 
-    <div class="sec">
-      <div class="sec-title">About Me</div>
-      <div class="about-text" contenteditable="true">Highly skilled Senior Front-End Developer with 5 years of expertise in building high-performance web applications using Next.js and TypeScript. Deep understanding of browser internals, rendering patterns (SSR/CSR), and state management. Looking for challenging opportunities to solve complex architectural problems and deliver world-class user experiences.</div>
+    <div class="page">
+        <div class="sidebar">
+            <div class="sidebar-photo-area">
+                <div class="photo-wrap" onclick="uploadPhoto()">
+                    <div class="photo-placeholder">N</div>
+                </div>
+                <div class="photo-hint">Click ảnh để thay đổi</div>
+            </div>
+            <div class="sidebar-body">
+
+                <div class="s-section">
+                    <div class="s-title">Contact</div>
+                    <div class="contact-row">
+                        <div class="c-label">Phone</div>
+                        <div class="c-val" contenteditable="true">+84-343414041</div>
+                    </div>
+                    <div class="contact-row">
+                        <div class="c-label">Email</div>
+                        <div class="c-val" contenteditable="true">baobao9942@gmail.com</div>
+                    </div>
+                    <div class="contact-row">
+                        <div class="c-label">Address</div>
+                        <div class="c-val" contenteditable="true">198/24/20 Phan Văn Trị,<br>Bình Thạnh, Ho Chi Minh
+                        </div>
+                    </div>
+                </div>
+
+                <div class="s-section">
+                    <div class="s-title">Personal</div>
+                    <div class="info-row"><span class="i-label">Birthday</span><span class="i-val"
+                            contenteditable="true">04/02/1999</span></div>
+                    <div class="info-row"><span class="i-label">Nationality</span><span class="i-val"
+                            contenteditable="true">Vietnamese</span></div>
+                    <div class="info-row"><span class="i-label">Status</span><span class="i-val"
+                            contenteditable="true">Single</span></div>
+                    <div class="info-row"><span class="i-label">Gender</span><span class="i-val"
+                            contenteditable="true">Male</span></div>
+                </div>
+
+                <div class="s-section">
+                    <div class="s-title">Skills</div>
+                    <div class="sk-group">
+                        <div class="sk-group-name">Languages</div>
+                        <div class="sk-tags">
+                            <span class="sk-tag" contenteditable="true">JavaScript</span>
+                            <span class="sk-tag" contenteditable="true">TypeScript</span>
+                            <span class="sk-tag" contenteditable="true">Python</span>
+                            <span class="sk-tag" contenteditable="true">Java</span>
+                            <span class="sk-tag" contenteditable="true">PHP</span>
+                            <span class="sk-tag" contenteditable="true">HTML5</span>
+                            <span class="sk-tag" contenteditable="true">CSS3 / SCSS</span>
+                        </div>
+                    </div>
+                    <div class="sk-group">
+                        <div class="sk-group-name">Frameworks & Libraries</div>
+                        <div class="sk-tags">
+                            <span class="sk-tag" contenteditable="true">Next.js</span>
+                            <span class="sk-tag" contenteditable="true">React.js</span>
+                            <span class="sk-tag" contenteditable="true">Angular</span>
+                            <span class="sk-tag" contenteditable="true">Django</span>
+                            <span class="sk-tag" contenteditable="true">Spring Boot</span>
+                            <span class="sk-tag" contenteditable="true">Smarty</span>
+                        </div>
+                    </div>
+                    <div class="sk-group">
+                        <div class="sk-group-name">UI Libraries</div>
+                        <div class="sk-tags">
+                            <span class="sk-tag" contenteditable="true">Material UI</span>
+                            <span class="sk-tag" contenteditable="true">Ant Design</span>
+                            <span class="sk-tag" contenteditable="true">Refine</span>
+                        </div>
+                    </div>
+                    <div class="sk-group">
+                        <div class="sk-group-name">Auth & Integration</div>
+                        <div class="sk-tags">
+                            <span class="sk-tag" contenteditable="true">Keycloak / SSO</span>
+                            <span class="sk-tag" contenteditable="true">RESTful API</span>
+                            <span class="sk-tag" contenteditable="true">SPFx</span>
+                        </div>
+                    </div>
+                    <div class="sk-group">
+                        <div class="sk-group-name">Power Platform</div>
+                        <div class="sk-tags">
+                            <span class="sk-tag" contenteditable="true">Power Apps</span>
+                            <span class="sk-tag" contenteditable="true">Power Automate</span>
+                            <span class="sk-tag" contenteditable="true">SharePoint</span>
+                        </div>
+                    </div>
+                    <div class="sk-group">
+                        <div class="sk-group-name">State & Architecture</div>
+                        <div class="sk-tags">
+                            <span class="sk-tag" contenteditable="true">Redux</span>
+                            <span class="sk-tag" contenteditable="true">Zustand</span>
+                            <span class="sk-tag" contenteditable="true">Micro-Frontend</span>
+                            <span class="sk-tag" contenteditable="true">MVC</span>
+                            <span class="sk-tag" contenteditable="true">SSR / CSR</span>
+                        </div>
+                    </div>
+                    <div class="sk-group">
+                        <div class="sk-group-name">Tools & Others</div>
+                        <div class="sk-tags">
+                            <span class="sk-tag" contenteditable="true">Git</span>
+                            <span class="sk-tag" contenteditable="true">Webpack</span>
+                            <span class="sk-tag" contenteditable="true">BEM</span>
+                            <span class="sk-tag" contenteditable="true">Formbricks</span>
+                            <span class="sk-tag" contenteditable="true">ECharts</span>
+                            <span class="sk-tag" contenteditable="true">AmCharts</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="main">
+            <div class="name-block">
+                <h1 contenteditable="true">NGÔ NGUYÊN BẢO</h1>
+                <div class="role" contenteditable="true">Frontend Developer &nbsp;·&nbsp; 5 Years Experience</div>
+            </div>
+
+            <div class="sec">
+                <div class="sec-title">About Me</div>
+                <div class="about-text" contenteditable="true">Highly skilled Senior Front-End Developer with 5 years of
+                    expertise in building high-performance web applications using Next.js and TypeScript. Deep
+                    understanding of browser internals, rendering patterns (SSR/CSR), and state management. Looking for
+                    challenging opportunities to solve complex architectural problems and deliver world-class user
+                    experiences.</div>
+            </div>
+
+            <div class="sec">
+                <div class="sec-title">Experience</div>
+
+                <!-- ONE MOUNT -->
+                <div class="co-block">
+                    <div class="co-header">
+                        <div class="co-name" contenteditable="true">One Mount</div>
+                        <div class="co-period" contenteditable="true">08/2025 – now</div>
+                    </div>
+                    <div class="proj">
+                        <div class="proj-top">
+                            <span class="proj-name" contenteditable="true">Biz-Portal (Next.js + Keycloak)</span>
+                            <span class="proj-period" contenteditable="true">09/2025 – 02/2026 · 5 months</span>
+                        </div>
+                        <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> Next.js · Keycloak ·
+                            RESTful APIs</div>
+                        <div class="proj-body" contenteditable="true">
+                            <ul>
+                                <li><strong>Authentication Architecture:</strong> Architected a robust Multi-domain SSO
+                                    (Single Sign-On) system using Keycloak. Configured multi-client support to allow
+                                    seamless authentication across disparate domains within the project ecosystem.</li>
+                                <li><strong>Centralized Management:</strong> Built a Unified Dashboard serving as a
+                                    central hub to monitor and manage all sub-applications.</li>
+                                <li><strong>Digital Signature (E-Sign):</strong> Integrated FPT Remote Signing Module to
+                                    enable legally binding digital signatures. Developed a secure workflow for document
+                                    processing and signing validation.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="proj">
+                        <div class="proj-top">
+                            <span class="proj-name alt" contenteditable="true">Backend System Development
+                                (Python)</span>
+                            <span class="proj-period" contenteditable="true">08/2025 – 12/2025 · 4 months</span>
+                        </div>
+                        <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> Python · Django · RESTful
+                            APIs · MySQL</div>
+                        <div class="proj-body" contenteditable="true">
+                            <ul>
+                                <li><strong>API Development:</strong> Developed and maintained RESTful API endpoints to
+                                    handle core data operations (CRUD), ensuring reliable communication between client
+                                    and server.</li>
+                                <li><strong>Database Management:</strong> Wrote optimized queries for data retrieval and
+                                    persistence, ensuring data integrity and high availability.</li>
+                                <li><strong>Collaboration:</strong> Collaborated with the core team to implement
+                                    business logic and troubleshoot backend issues, adhering to strict coding standards.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MASTERISE HOMES -->
+                <div class="co-block">
+                    <div class="co-header">
+                        <div class="co-name" contenteditable="true">Masterise Homes</div>
+                        <div class="co-period" contenteditable="true">10/2024 – 02/2026</div>
+                    </div>
+                    <div class="proj">
+                        <div class="proj-top">
+                            <span class="proj-name" contenteditable="true">Internal UI Core Framework (HTML5)</span>
+                            <span class="proj-period" contenteditable="true">01/2025 – 02/2026 · 1 year 1 month</span>
+                        </div>
+                        <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> HTML5 · CSS3 (SCSS/SASS)
+                            · BEM Methodology</div>
+                        <div class="proj-body" contenteditable="true">
+                            <ul>
+                                <li><strong>Goal:</strong> Developed a reusable Frontend Boilerplate to accelerate the
+                                    deployment of content-driven websites (News/Media portals) for clients.</li>
+                                <li><strong>Standardization:</strong> Created a unified set of responsive UI components
+                                    (Grid, Typography, Navigation), ensuring design consistency across multiple client
+                                    projects.</li>
+                                <li><strong>Rapid Development:</strong> Reduced the setup and coding time for new
+                                    websites by 40% by utilizing this pre-built core library instead of starting from
+                                    scratch.</li>
+                                <li><strong>Performance:</strong> Optimized CSS architecture for fast loading speeds and
+                                    SEO friendliness — essential for news portals.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="proj">
+                        <div class="proj-top">
+                            <span class="proj-name" contenteditable="true">Modern Intranet Portal (SPFx + Power
+                                Automate)</span>
+                            <span class="proj-period" contenteditable="true">03/2025 – 07/2025 · 4 months</span>
+                        </div>
+                        <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> SharePoint Framework
+                            (SPFx) · React · Power Automate · Power Apps</div>
+                        <div class="proj-body" contenteditable="true">
+                            <ul>
+                                <li>Developed a modern Corporate Intranet Portal using SPFx and React; engineered custom
+                                    Web Parts to display user profiles, verify HR document repositories, and centralize
+                                    internal announcements.</li>
+                                <li>Integrated Power Automate to streamline backend workflows, automatically fetching
+                                    and displaying employee birthdays, meeting schedules, and company events from
+                                    Outlook/SharePoint lists.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="proj">
+                        <div class="proj-top">
+                            <span class="proj-name alt" contenteditable="true">High-Scale Asset Inventory Solution
+                                (Power Platform)</span>
+                            <span class="proj-period" contenteditable="true">01/2025 – 05/2025 · 4 months</span>
+                        </div>
+                        <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> Power Apps · Power
+                            Automate · SharePoint Lists · QR/Barcode Integration</div>
+                        <div class="proj-body" contenteditable="true">
+                            <ul>
+                                <li><strong>Architecture:</strong> Architected a role-based asset management system
+                                    utilizing SharePoint Lists for hierarchical data modeling (Division/Position).</li>
+                                <li><strong>Hardware Integration:</strong> Successfully integrated handheld QR/Barcode
+                                    scanners with Power Apps to streamline physical inventory operations.</li>
+                                <li><strong>Complex Workflow Automation:</strong> Overcame platform throttling limits to
+                                    process a 100,000-item dataset via Power Automate. Implemented a recursive flow to
+                                    generate assets and QR codes in bulk, with a synchronous write-back mechanism to
+                                    update the database instantly.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="proj">
+                        <div class="proj-top">
+                            <span class="proj-name" contenteditable="true">B2B Customer Dashboard (Refine +
+                                Next.js)</span>
+                            <span class="proj-period" contenteditable="true">10/2024 – 01/2025 · 3 months</span>
+                        </div>
+                        <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> Next.js · Refine ·
+                            Keycloak · RESTful APIs</div>
+                        <div class="proj-body" contenteditable="true">
+                            <ul>
+                                <li><strong>Secure Access:</strong> Utilized Keycloak to secure sensitive corporate data
+                                    via Single Sign-On (SSO) and strict authorization policies.</li>
+                                <li><strong>Unified Analytics:</strong> Solved data fragmentation issues by aggregating
+                                    multi-stream data into a single, interactive dashboard, improving the efficiency of
+                                    customer statistical analysis.</li>
+                                <li><strong>Outcome:</strong> Streamlined the customer analysis process, enabling the
+                                    B2B team to make data-driven decisions faster.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="proj">
+                        <div class="proj-top">
+                            <span class="proj-name alt" contenteditable="true">Internal HR &amp; Time Attendance
+                                System</span>
+                            <span class="proj-period" contenteditable="true">10/2024 – 01/2025 · 3 months</span>
+                        </div>
+                        <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> PHP · Smarty Template
+                            Engine · MySQL · jQuery</div>
+                        <div class="proj-body" contenteditable="true">
+                            <ul>
+                                <li><strong>Architecture:</strong> Implemented the MVC pattern using Smarty to strictly
+                                    separate business logic from the presentation layer (UI), ensuring code
+                                    maintainability.</li>
+                                <li><strong>Time Tracking:</strong> Developed a digital timesheet system allowing
+                                    employees to Check-in/Check-out and track overtime hours.</li>
+                                <li><strong>Leave Management:</strong> Built workflows for leave requests (sick leave,
+                                    annual leave) and manager approvals.</li>
+                                <li><strong>Payroll Integration:</strong> Automated the calculation of working hours and
+                                    generated monthly attendance reports for the payroll department, reducing manual
+                                    processing errors.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="proj">
+                        <div class="proj-top">
+                            <span class="proj-name" contenteditable="true">User Insight &amp; Survey System
+                                (Formbricks)</span>
+                            <span class="proj-period" contenteditable="true">12/2024 – 02/2025 · 2 months</span>
+                        </div>
+                        <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> Formbricks (Open Source)
+                            · Self-hosted</div>
+                        <div class="proj-body" contenteditable="true">
+                            <ul>
+                                <li>Leveraged Formbricks engine to build an in-app survey mechanism; implemented a
+                                    self-hosted feedback system, allowing the team to gather contextual user feedback
+                                    without compromising data privacy.</li>
+                                <li>Customized the UI/UX of survey forms to align with the company's design system,
+                                    ensuring a consistent brand experience.</li>
+                                <li>Enabled the product team to make data-driven decisions based on direct user ratings
+                                    and comments.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FPT IS -->
+                <div class="co-block">
+                    <div class="co-header">
+                        <div class="co-name" contenteditable="true">FPT IS</div>
+                        <div class="co-period" contenteditable="true">06/2021 – 02/2024</div>
+                    </div>
+                    <div class="proj">
+                        <div class="proj-top">
+                            <span class="proj-name" contenteditable="true">Khanh Hoa Province Management</span>
+                            <span class="proj-period" contenteditable="true">06/2023 – 02/2024 · 8 months</span>
+                        </div>
+                        <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> ReactJS · Material UI 5 ·
+                            Zustand · Microservices</div>
+                        <div class="proj-body" contenteditable="true">
+                            <ul>
+                                <li><strong>Dashboard &amp; Visualization:</strong> Designed and implemented a
+                                    comprehensive project-wide dashboard, transforming complex raw data into actionable
+                                    insights through interactive charts to support executive decision-making.</li>
+                                <li><strong>Workflow Optimization:</strong> Integrated E-Form functionality into the
+                                    core system, standardizing data input processes across multiple modules and reducing
+                                    manual entry errors.</li>
+                                <li><strong>UI Implementation:</strong> Developed dynamic list views and complex data
+                                    entry interfaces based on strict business requirements, ensuring high responsiveness
+                                    and user-friendly navigation.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="proj">
+                        <div class="proj-top">
+                            <span class="proj-name alt" contenteditable="true">Document Management System (Shared
+                                Services)</span>
+                            <span class="proj-period" contenteditable="true">01/2023 – 08/2023 · 7 months</span>
+                        </div>
+                        <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> ReactJS · Material UI 5 ·
+                            Webpack · Zustand · Micro-Frontend</div>
+                        <div class="proj-body" contenteditable="true">
+                            <ul>
+                                <li><strong>Micro-Frontend Architecture:</strong> Contributed to decoupling the
+                                    monolithic system into independent, scalable modules using Webpack Module
+                                    Federation.</li>
+                                <li><strong>Core UI Library:</strong> Built and maintained the Core Frontend System
+                                    using Material UI 5, establishing a unified Design System to ensure consistent UX/UI
+                                    across all business entities.</li>
+                                <li><strong>Performance Refactoring:</strong> Led the migration of legacy codebases from
+                                    Class Components/Pure State to Modern React Hooks (useMemo, useContext),
+                                    significantly improving code readability, maintainability, and rendering
+                                    performance.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="proj">
+                        <div class="proj-top">
+                            <span class="proj-name" contenteditable="true">Enterprise Management Module (Java)</span>
+                            <span class="proj-period" contenteditable="true">01/2023 – 12/2023 · 11 months</span>
+                        </div>
+                        <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> Java · Spring Boot ·
+                            Spring MVC · Spring Data JPA · MySQL / PostgreSQL</div>
+                        <div class="proj-body" contenteditable="true">
+                            <ul>
+                                <li><strong>Backend Development:</strong> Built robust RESTful web services using the
+                                    Spring Boot framework, following standard MVC pattern to strictly separate business
+                                    logic (Service layer) from data access (Repository layer).</li>
+                                <li><strong>Data Persistence:</strong> Utilized Spring Data JPA (Hibernate) to handle
+                                    complex CRUD operations and map database entities effectively across MySQL and
+                                    PostgreSQL.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="proj">
+                        <div class="proj-top">
+                            <span class="proj-name alt" contenteditable="true">Tra Vinh Province Management</span>
+                            <span class="proj-period" contenteditable="true">01/2022 – 12/2022 · 11 months</span>
+                        </div>
+                        <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> ReactJS (TypeScript) ·
+                            Material UI 4 · Redux · ECharts · AmCharts · ZingChart</div>
+                        <div class="proj-body" contenteditable="true">
+                            <ul>
+                                <li><strong>Data Forecasting:</strong> Developed advanced data forecasting modules using
+                                    ReactJS and TypeScript, enabling predictive analytics for provincial management.
+                                </li>
+                                <li><strong>Advanced Visualization:</strong> Integrated multiple charting libraries
+                                    (ECharts, AmCharts, ZingChart) to visualize multi-dimensional datasets, creating a
+                                    comprehensive monitoring dashboard.</li>
+                                <li><strong>Personalization Engine:</strong> Implemented dashboard personalization
+                                    features, empowering users to customize chart layouts and interface themes according
+                                    to their specific monitoring needs.</li>
+                                <li><strong>Core Development:</strong> Designed the foundational logic for themes and
+                                    templates, accelerating development for subsequent reporting modules.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="proj">
+                        <div class="proj-top">
+                            <span class="proj-name" contenteditable="true">Maintenance &amp; System Enhancement</span>
+                            <span class="proj-period" contenteditable="true">06/2021 – 12/2021 · 6 months</span>
+                        </div>
+                        <div class="proj-body" contenteditable="true">
+                            <ul>
+                                <li>Collaborated with the core team to maintain system stability by diagnosing and
+                                    resolving critical bugs, ensuring high availability for end-users.</li>
+                                <li>Implemented feature enhancements and UI/UX improvements based on user feedback,
+                                    refining the overall product experience.</li>
+                                <li>Developed and integrated supplementary modules and data entry forms to support
+                                    specific business workflows.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="sec">
+                <div class="sec-title">Education</div>
+                <div class="edu-period" contenteditable="true">09/2017 – 12/2021 &nbsp;(4 years 3 months)</div>
+                <div class="edu-degree" contenteditable="true">Bachelor's Degree – Information Technology</div>
+                <div class="edu-school" contenteditable="true">HUTECH University &nbsp;·&nbsp; Classification: Very Good
+                </div>
+                <div class="edu-detail" contenteditable="true">
+                    <strong>Capstone Project:</strong> Developed a mock fingerprint recognition application using
+                    Convolutional Neural Networks (CNN).<br>
+                    <strong>Coursework:</strong> Data Structures &amp; Algorithms, Web Programming, Object-Oriented
+                    Programming (OOP).<br>
+                    <strong>Extracurricular:</strong> Actively participated in volunteer work, team-building events,
+                    academic seminars and workshops.
+                </div>
+            </div>
+
+        </div>
     </div>
 
-    <div class="sec">
-      <div class="sec-title">Experience</div>
+    <script>
+        document.getElementById('colorPicker').addEventListener('input', e => applyColor(e.target.value));
 
-      <!-- ONE MOUNT -->
-      <div class="co-block">
-        <div class="co-header">
-          <div class="co-name" contenteditable="true">One Mount</div>
-          <div class="co-period" contenteditable="true">08/2025 – now</div>
-        </div>
-        <div class="proj">
-          <div class="proj-top">
-            <span class="proj-name" contenteditable="true">Biz-Portal (Next.js + Keycloak)</span>
-            <span class="proj-period" contenteditable="true">09/2025 – 02/2026 · 5 months</span>
-          </div>
-          <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> Next.js · Keycloak · RESTful APIs</div>
-          <div class="proj-body" contenteditable="true">
-            <ul>
-              <li><strong>Authentication Architecture:</strong> Architected a robust Multi-domain SSO (Single Sign-On) system using Keycloak. Configured multi-client support to allow seamless authentication across disparate domains within the project ecosystem.</li>
-              <li><strong>Centralized Management:</strong> Built a Unified Dashboard serving as a central hub to monitor and manage all sub-applications.</li>
-              <li><strong>Digital Signature (E-Sign):</strong> Integrated FPT Remote Signing Module to enable legally binding digital signatures. Developed a secure workflow for document processing and signing validation.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="proj">
-          <div class="proj-top">
-            <span class="proj-name alt" contenteditable="true">Backend System Development (Python)</span>
-            <span class="proj-period" contenteditable="true">08/2025 – 12/2025 · 4 months</span>
-          </div>
-          <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> Python · Django · RESTful APIs · MySQL</div>
-          <div class="proj-body" contenteditable="true">
-            <ul>
-              <li><strong>API Development:</strong> Developed and maintained RESTful API endpoints to handle core data operations (CRUD), ensuring reliable communication between client and server.</li>
-              <li><strong>Database Management:</strong> Wrote optimized queries for data retrieval and persistence, ensuring data integrity and high availability.</li>
-              <li><strong>Collaboration:</strong> Collaborated with the core team to implement business logic and troubleshoot backend issues, adhering to strict coding standards.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+        function hexToRgb(hex) {
+            return [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16)).join(',');
+        }
+        function lighten(hex, pct) {
+            return '#' + [1, 3, 5].map(i => {
+                const v = parseInt(hex.slice(i, i + 2), 16);
+                return Math.round(v + (255 - v) * pct).toString(16).padStart(2, '0');
+            }).join('');
+        }
 
-      <!-- MASTERISE HOMES -->
-      <div class="co-block">
-        <div class="co-header">
-          <div class="co-name" contenteditable="true">Masterise Homes</div>
-          <div class="co-period" contenteditable="true">10/2024 – 02/2026</div>
-        </div>
-        <div class="proj">
-          <div class="proj-top">
-            <span class="proj-name" contenteditable="true">Internal UI Core Framework (HTML5)</span>
-            <span class="proj-period" contenteditable="true">01/2025 – 02/2026 · 1 year 1 month</span>
-          </div>
-          <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> HTML5 · CSS3 (SCSS/SASS) · BEM Methodology</div>
-          <div class="proj-body" contenteditable="true">
-            <ul>
-              <li><strong>Goal:</strong> Developed a reusable Frontend Boilerplate to accelerate the deployment of content-driven websites (News/Media portals) for clients.</li>
-              <li><strong>Standardization:</strong> Created a unified set of responsive UI components (Grid, Typography, Navigation), ensuring design consistency across multiple client projects.</li>
-              <li><strong>Rapid Development:</strong> Reduced the setup and coding time for new websites by 40% by utilizing this pre-built core library instead of starting from scratch.</li>
-              <li><strong>Performance:</strong> Optimized CSS architecture for fast loading speeds and SEO friendliness — essential for news portals.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="proj">
-          <div class="proj-top">
-            <span class="proj-name" contenteditable="true">Modern Intranet Portal (SPFx + Power Automate)</span>
-            <span class="proj-period" contenteditable="true">03/2025 – 07/2025 · 4 months</span>
-          </div>
-          <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> SharePoint Framework (SPFx) · React · Power Automate · Power Apps</div>
-          <div class="proj-body" contenteditable="true">
-            <ul>
-              <li>Developed a modern Corporate Intranet Portal using SPFx and React; engineered custom Web Parts to display user profiles, verify HR document repositories, and centralize internal announcements.</li>
-              <li>Integrated Power Automate to streamline backend workflows, automatically fetching and displaying employee birthdays, meeting schedules, and company events from Outlook/SharePoint lists.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="proj">
-          <div class="proj-top">
-            <span class="proj-name alt" contenteditable="true">High-Scale Asset Inventory Solution (Power Platform)</span>
-            <span class="proj-period" contenteditable="true">01/2025 – 05/2025 · 4 months</span>
-          </div>
-          <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> Power Apps · Power Automate · SharePoint Lists · QR/Barcode Integration</div>
-          <div class="proj-body" contenteditable="true">
-            <ul>
-              <li><strong>Architecture:</strong> Architected a role-based asset management system utilizing SharePoint Lists for hierarchical data modeling (Division/Position).</li>
-              <li><strong>Hardware Integration:</strong> Successfully integrated handheld QR/Barcode scanners with Power Apps to streamline physical inventory operations.</li>
-              <li><strong>Complex Workflow Automation:</strong> Overcame platform throttling limits to process a 100,000-item dataset via Power Automate. Implemented a recursive flow to generate assets and QR codes in bulk, with a synchronous write-back mechanism to update the database instantly.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="proj">
-          <div class="proj-top">
-            <span class="proj-name" contenteditable="true">B2B Customer Dashboard (Refine + Next.js)</span>
-            <span class="proj-period" contenteditable="true">10/2024 – 01/2025 · 3 months</span>
-          </div>
-          <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> Next.js · Refine · Keycloak · RESTful APIs</div>
-          <div class="proj-body" contenteditable="true">
-            <ul>
-              <li><strong>Secure Access:</strong> Utilized Keycloak to secure sensitive corporate data via Single Sign-On (SSO) and strict authorization policies.</li>
-              <li><strong>Unified Analytics:</strong> Solved data fragmentation issues by aggregating multi-stream data into a single, interactive dashboard, improving the efficiency of customer statistical analysis.</li>
-              <li><strong>Outcome:</strong> Streamlined the customer analysis process, enabling the B2B team to make data-driven decisions faster.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="proj">
-          <div class="proj-top">
-            <span class="proj-name alt" contenteditable="true">Internal HR &amp; Time Attendance System</span>
-            <span class="proj-period" contenteditable="true">10/2024 – 01/2025 · 3 months</span>
-          </div>
-          <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> PHP · Smarty Template Engine · MySQL · jQuery</div>
-          <div class="proj-body" contenteditable="true">
-            <ul>
-              <li><strong>Architecture:</strong> Implemented the MVC pattern using Smarty to strictly separate business logic from the presentation layer (UI), ensuring code maintainability.</li>
-              <li><strong>Time Tracking:</strong> Developed a digital timesheet system allowing employees to Check-in/Check-out and track overtime hours.</li>
-              <li><strong>Leave Management:</strong> Built workflows for leave requests (sick leave, annual leave) and manager approvals.</li>
-              <li><strong>Payroll Integration:</strong> Automated the calculation of working hours and generated monthly attendance reports for the payroll department, reducing manual processing errors.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="proj">
-          <div class="proj-top">
-            <span class="proj-name" contenteditable="true">User Insight &amp; Survey System (Formbricks)</span>
-            <span class="proj-period" contenteditable="true">12/2024 – 02/2025 · 2 months</span>
-          </div>
-          <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> Formbricks (Open Source) · Self-hosted</div>
-          <div class="proj-body" contenteditable="true">
-            <ul>
-              <li>Leveraged Formbricks engine to build an in-app survey mechanism; implemented a self-hosted feedback system, allowing the team to gather contextual user feedback without compromising data privacy.</li>
-              <li>Customized the UI/UX of survey forms to align with the company's design system, ensuring a consistent brand experience.</li>
-              <li>Enabled the product team to make data-driven decisions based on direct user ratings and comments.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+        function applyColor(hex) {
+            const l1 = lighten(hex, .75), l2 = lighten(hex, .88), l3 = lighten(hex, .93);
+            document.querySelector('.sidebar').style.background = l3;
+            document.querySelector('.sidebar-photo-area').style.background =
+                `linear-gradient(160deg,${lighten(hex, .6)} 0%,${lighten(hex, .45)} 100%)`;
+            document.querySelectorAll('.s-title,.sk-group-name,.sec-title,.co-name,.name-block .role,.edu-school')
+                .forEach(el => el.style.color = hex);
+            document.querySelectorAll('.s-title').forEach(el => el.style.borderBottomColor = l1);
+            document.querySelectorAll('.sec-title').forEach(el => el.style.borderBottomColor = l1);
+            document.querySelectorAll('.sk-tag:not(.new)').forEach(el => { el.style.background = l2; el.style.color = hex; });
+            document.querySelectorAll('.sk-tag.new,.proj-name').forEach(el => el.style.background = hex);
+            document.querySelectorAll('.proj-name.alt').forEach(el => el.style.background = lighten(hex, .15));
+            document.querySelectorAll('.proj').forEach(el => el.style.borderLeftColor = l1);
+            document.querySelectorAll('.co-header').forEach(el => {
+                el.style.background = `linear-gradient(90deg,${l2},${l3})`;
+                el.style.borderLeftColor = hex;
+            });
+            let s = document.getElementById('dyn') || (() => {
+                const t = document.createElement('style'); t.id = 'dyn'; document.head.appendChild(t); return t;
+            })();
+            s.textContent = `.proj-body li::marker{color:${hex}}.proj-body strong{color:${lighten(hex, .15)}}[contenteditable]:focus{box-shadow:inset 0 0 0 1.5px rgba(${hexToRgb(hex)},.35);background:rgba(${hexToRgb(hex)},.08)}`;
+        }
 
-      <!-- FPT IS -->
-      <div class="co-block">
-        <div class="co-header">
-          <div class="co-name" contenteditable="true">FPT IS</div>
-          <div class="co-period" contenteditable="true">06/2021 – 02/2024</div>
-        </div>
-        <div class="proj">
-          <div class="proj-top">
-            <span class="proj-name" contenteditable="true">Khanh Hoa Province Management</span>
-            <span class="proj-period" contenteditable="true">06/2023 – 02/2024 · 8 months</span>
-          </div>
-          <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> ReactJS · Material UI 5 · Zustand · Microservices</div>
-          <div class="proj-body" contenteditable="true">
-            <ul>
-              <li><strong>Dashboard &amp; Visualization:</strong> Designed and implemented a comprehensive project-wide dashboard, transforming complex raw data into actionable insights through interactive charts to support executive decision-making.</li>
-              <li><strong>Workflow Optimization:</strong> Integrated E-Form functionality into the core system, standardizing data input processes across multiple modules and reducing manual entry errors.</li>
-              <li><strong>UI Implementation:</strong> Developed dynamic list views and complex data entry interfaces based on strict business requirements, ensuring high responsiveness and user-friendly navigation.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="proj">
-          <div class="proj-top">
-            <span class="proj-name alt" contenteditable="true">Document Management System (Shared Services)</span>
-            <span class="proj-period" contenteditable="true">01/2023 – 08/2023 · 7 months</span>
-          </div>
-          <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> ReactJS · Material UI 5 · Webpack · Zustand · Micro-Frontend</div>
-          <div class="proj-body" contenteditable="true">
-            <ul>
-              <li><strong>Micro-Frontend Architecture:</strong> Contributed to decoupling the monolithic system into independent, scalable modules using Webpack Module Federation.</li>
-              <li><strong>Core UI Library:</strong> Built and maintained the Core Frontend System using Material UI 5, establishing a unified Design System to ensure consistent UX/UI across all business entities.</li>
-              <li><strong>Performance Refactoring:</strong> Led the migration of legacy codebases from Class Components/Pure State to Modern React Hooks (useMemo, useContext), significantly improving code readability, maintainability, and rendering performance.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="proj">
-          <div class="proj-top">
-            <span class="proj-name" contenteditable="true">Enterprise Management Module (Java)</span>
-            <span class="proj-period" contenteditable="true">01/2023 – 12/2023 · 11 months</span>
-          </div>
-          <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> Java · Spring Boot · Spring MVC · Spring Data JPA · MySQL / PostgreSQL</div>
-          <div class="proj-body" contenteditable="true">
-            <ul>
-              <li><strong>Backend Development:</strong> Built robust RESTful web services using the Spring Boot framework, following standard MVC pattern to strictly separate business logic (Service layer) from data access (Repository layer).</li>
-              <li><strong>Data Persistence:</strong> Utilized Spring Data JPA (Hibernate) to handle complex CRUD operations and map database entities effectively across MySQL and PostgreSQL.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="proj">
-          <div class="proj-top">
-            <span class="proj-name alt" contenteditable="true">Tra Vinh Province Management</span>
-            <span class="proj-period" contenteditable="true">01/2022 – 12/2022 · 11 months</span>
-          </div>
-          <div class="proj-stack" contenteditable="true"><strong>Stack:</strong> ReactJS (TypeScript) · Material UI 4 · Redux · ECharts · AmCharts · ZingChart</div>
-          <div class="proj-body" contenteditable="true">
-            <ul>
-              <li><strong>Data Forecasting:</strong> Developed advanced data forecasting modules using ReactJS and TypeScript, enabling predictive analytics for provincial management.</li>
-              <li><strong>Advanced Visualization:</strong> Integrated multiple charting libraries (ECharts, AmCharts, ZingChart) to visualize multi-dimensional datasets, creating a comprehensive monitoring dashboard.</li>
-              <li><strong>Personalization Engine:</strong> Implemented dashboard personalization features, empowering users to customize chart layouts and interface themes according to their specific monitoring needs.</li>
-              <li><strong>Core Development:</strong> Designed the foundational logic for themes and templates, accelerating development for subsequent reporting modules.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="proj">
-          <div class="proj-top">
-            <span class="proj-name" contenteditable="true">Maintenance &amp; System Enhancement</span>
-            <span class="proj-period" contenteditable="true">06/2021 – 12/2021 · 6 months</span>
-          </div>
-          <div class="proj-body" contenteditable="true">
-            <ul>
-              <li>Collaborated with the core team to maintain system stability by diagnosing and resolving critical bugs, ensuring high availability for end-users.</li>
-              <li>Implemented feature enhancements and UI/UX improvements based on user feedback, refining the overall product experience.</li>
-              <li>Developed and integrated supplementary modules and data entry forms to support specific business workflows.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+        document.getElementById('fontSize').addEventListener('input', e => {
+            document.querySelector('.page').style.fontSize = e.target.value + 'pt';
+        });
+        document.getElementById('fontSelect').addEventListener('change', e => {
+            document.querySelector('.page').style.fontFamily = e.target.value;
+        });
 
-    </div>
+        function uploadPhoto() { document.getElementById('photoInput').click(); }
+        function handlePhoto(e) {
+            const file = e.target.files[0]; if (!file) return;
+            const r = new FileReader();
+            r.onload = ev => {
+                const w = document.querySelector('.photo-wrap');
+                w.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;display:block">`;
+                w.onclick = uploadPhoto;
+            };
+            r.readAsDataURL(file);
+        }
 
-    <div class="sec">
-      <div class="sec-title">Education</div>
-      <div class="edu-period" contenteditable="true">09/2017 – 12/2021 &nbsp;(4 years 3 months)</div>
-      <div class="edu-degree" contenteditable="true">Bachelor's Degree – Information Technology</div>
-      <div class="edu-school" contenteditable="true">HUTECH University &nbsp;·&nbsp; Classification: Very Good</div>
-      <div class="edu-detail" contenteditable="true">
-        <strong>Capstone Project:</strong> Developed a mock fingerprint recognition application using Convolutional Neural Networks (CNN).<br>
-        <strong>Coursework:</strong> Data Structures &amp; Algorithms, Web Programming, Object-Oriented Programming (OOP).<br>
-        <strong>Extracurricular:</strong> Actively participated in volunteer work, team-building events, academic seminars and workshops.
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<script>
-  document.getElementById('colorPicker').addEventListener('input', e => applyColor(e.target.value));
-
-  function hexToRgb(hex) {
-    return [1,3,5].map(i => parseInt(hex.slice(i,i+2),16)).join(',');
-  }
-  function lighten(hex, pct) {
-    return '#' + [1,3,5].map(i => {
-      const v = parseInt(hex.slice(i,i+2),16);
-      return Math.round(v + (255-v)*pct).toString(16).padStart(2,'0');
-    }).join('');
-  }
-
-  function applyColor(hex) {
-    const l1=lighten(hex,.75), l2=lighten(hex,.88), l3=lighten(hex,.93);
-    document.querySelector('.sidebar').style.background = l3;
-    document.querySelector('.sidebar-photo-area').style.background =
-      `linear-gradient(160deg,${lighten(hex,.6)} 0%,${lighten(hex,.45)} 100%)`;
-    document.querySelectorAll('.s-title,.sk-group-name,.sec-title,.co-name,.name-block .role,.edu-school')
-      .forEach(el => el.style.color = hex);
-    document.querySelectorAll('.s-title').forEach(el => el.style.borderBottomColor = l1);
-    document.querySelectorAll('.sec-title').forEach(el => el.style.borderBottomColor = l1);
-    document.querySelectorAll('.sk-tag:not(.new)').forEach(el => { el.style.background=l2; el.style.color=hex; });
-    document.querySelectorAll('.sk-tag.new,.proj-name').forEach(el => el.style.background = hex);
-    document.querySelectorAll('.proj-name.alt').forEach(el => el.style.background = lighten(hex,.15));
-    document.querySelectorAll('.proj').forEach(el => el.style.borderLeftColor = l1);
-    document.querySelectorAll('.co-header').forEach(el => {
-      el.style.background = `linear-gradient(90deg,${l2},${l3})`;
-      el.style.borderLeftColor = hex;
-    });
-    let s = document.getElementById('dyn') || (() => {
-      const t=document.createElement('style'); t.id='dyn'; document.head.appendChild(t); return t;
-    })();
-    s.textContent = `.proj-body li::marker{color:${hex}}.proj-body strong{color:${lighten(hex,.15)}}[contenteditable]:focus{box-shadow:inset 0 0 0 1.5px rgba(${hexToRgb(hex)},.35);background:rgba(${hexToRgb(hex)},.08)}`;
-  }
-
-  document.getElementById('fontSize').addEventListener('input', e => {
-    document.querySelector('.page').style.fontSize = e.target.value + 'pt';
-  });
-  document.getElementById('fontSelect').addEventListener('change', e => {
-    document.querySelector('.page').style.fontFamily = e.target.value;
-  });
-
-  function uploadPhoto() { document.getElementById('photoInput').click(); }
-  function handlePhoto(e) {
-    const file = e.target.files[0]; if (!file) return;
-    const r = new FileReader();
-    r.onload = ev => {
-      const w = document.querySelector('.photo-wrap');
-      w.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;display:block">`;
-      w.onclick = uploadPhoto;
-    };
-    r.readAsDataURL(file);
-  }
-
-  function downloadPDF() {
-    document.querySelectorAll('[contenteditable]').forEach(el => {
-      el.dataset.ce = el.getAttribute('contenteditable');
-      el.removeAttribute('contenteditable');
-    });
-    window.print();
-    setTimeout(() => {
-      document.querySelectorAll('[data-ce]').forEach(el => {
-        el.setAttribute('contenteditable', el.dataset.ce);
-        delete el.dataset.ce;
-      });
-    }, 1000);
-  }
-</script>
+        function downloadPDF() {
+            document.querySelectorAll('[contenteditable]').forEach(el => {
+                el.dataset.ce = el.getAttribute('contenteditable');
+                el.removeAttribute('contenteditable');
+            });
+            window.print();
+            setTimeout(() => {
+                document.querySelectorAll('[data-ce]').forEach(el => {
+                    el.setAttribute('contenteditable', el.dataset.ce);
+                    delete el.dataset.ce;
+                });
+            }, 1000);
+        }
+    </script>
 </body>
+
 </html>
